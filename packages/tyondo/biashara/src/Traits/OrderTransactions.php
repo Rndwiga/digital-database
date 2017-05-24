@@ -39,6 +39,9 @@ trait OrderTransactions
     private function getSingleDraftOrder($orderNumberId){
         return Draft_order::where('order_number_id', $orderNumberId)->get();
     }
+    private function getSingleProductDraftOrder($orderNumberId){
+        return Draft_order::where('id', $orderNumberId)->get();
+    }
     private function deleteSingleDraftOrder($itemId){
         return Draft_order::find($itemId)->delete();
     }

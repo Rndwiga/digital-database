@@ -45,15 +45,23 @@
                                     <td class="text-center"><strong>Item Price</strong></td>
                                     <td class="text-center"><strong>Item Quantity</strong></td>
                                     <td class="text-right"><strong>Total</strong></td>
+                                    <td class="text-right"><strong>Action</strong></td>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($order_details['details'] as $order)
-                                <tr>
+                                <tr id="row{{$order->id}}">
                                     <td>{{$order->product}}</td>
-                                    <td class="text-center">{{$order->unit_price}}</td>
-                                    <td class="text-center">{{$order->quantity}}</td>
-                                    <td class="text-right">{{$order->product_total_order}}</td>
+                                    <td class="text-center" id="unit_price_val{{$order->id}}">{{$order->unit_price}}</td>
+                                    <td class="text-center" id="quantity_val{{$order->id}}">{{$order->quantity}}</td>
+                                    <td class="text-right" id="product_total_order_val{{$order->id}}">{{$order->product_total_order}}</td>
+                                    <td >
+                                        <input type='button' class="edit_button" id="edit_button{{$order->id}}" value="edit" onclick="edit_row('{{$order->id}}');">
+                                        <input type='button' class="save_button " id="save_button{{$order->id}}" value="save" onclick="save_row('{{$order->id}}');">
+                                        <input type='button' class="delete_button" id="delete_button{{$order->id}}" value="delete" onclick="delete_row('{{$order->id}}');">
+                                    </td>
+                                    {{--<td class="text-right"><i class=" fa fa-pencil-square-o"></i></td>
+                                    <td class="text-right"><i class=" fa fa-trash-o"></i></td>--}}
                                 </tr>
                                 @endforeach
                                 <tr>
@@ -63,6 +71,7 @@
                                     <td class="highrow text-right">
                                         {{isset($order_details)? $order_details['sub_total'] : null}}
                                     </td>
+                                    <td class="highrow text-center"></td>
                                 </tr>
                                 <tr>
                                     <td class="emptyrow"></td>
@@ -116,3 +125,82 @@
     </div>
     </div>
 @endsection
+@section('script')
+    <script>
+        function hideSave(){
+            document.getElementsByClassName("save_button").addClass("hidden");
+        }
+        hideSave();
+        function edit_row(id)
+        {
+           // var price=document.getElementById("unit_price_val"+id).innerHTML;
+            var quantity=document.getElementById("quantity_val"+id).innerHTML;
+           // var total=document.getElementById("product_total_order_val"+id).innerHTML;
+
+           // document.getElementById("unit_price_val"+id).innerHTML="<input type='text' id='unit_price"+id+"' value='"+price+"'>";
+            document.getElementById("quantity_val"+id).innerHTML="<input type='text' id='quantity"+id+"' value='"+quantity+"'>";
+           // document.getElementById("product_total_order_val"+id).innerHTML="<input type='text' id='product_total_order"+id+"' value='"+total+"'>";
+
+            document.getElementById("edit_button"+id).style.display="none";
+            document.getElementById("save_button"+id).style.display="block";
+        }
+
+        function save_row(id)
+        {
+            var price=document.getElementById("unit_price"+id).value;
+            var quantity=document.getElementById("quantity"+id).value;
+            var total=document.getElementById("product_total_order"+id).value;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            $.ajax
+            ({
+                type:'post',
+                url:'/order/update/single/product',
+                data:{
+                    id:id,
+                    unit_price:price,
+                    quantity:quantity,
+                    product_total_order:total
+                },
+                success:function(response) {
+                    if(response=="success")
+                    {
+                        document.getElementById("unit_price_val"+id).innerHTML=price;
+                        document.getElementById("quantity_val"+id).innerHTML=quantity;
+                        document.getElementById("product_total_order_val"+id).innerHTML=total;
+                        document.getElementById("edit_button"+id).style.display="block";
+                        document.getElementById("save_button"+id).style.display="none";
+                    }
+                }
+            });
+        }
+
+        function delete_row(id)
+        {
+            //$.ajaxSetup({
+             //   headers: {
+            //        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            //    }
+           // });
+            $.ajax
+            ({
+                type:'post',
+                url:'/order/delete/single/product',
+                data:{
+                    delete_row:'delete_row',
+                    id:id,
+                },
+                success:function(response) {
+                    if(response=="success")
+                    {
+                        var row=document.getElementById("row"+id);
+                        row.parentNode.removeChild(row);
+                    }
+                }
+            });
+        }
+    </script>
+   @endsection

@@ -31,4 +31,7 @@ Route::group(['prefix'=>'order'], function(){
 
         Route::get('/save/{orderNumberId}', $namespaceController.'BiasharaOrdersController@saveOrder')->name('biashara.order.save');
         Route::get('/delete/{orderNumberId}', $namespaceController.'BiasharaOrdersController@deleteOrder')->name('biashara.order.delete');
+
+    Route::post('/update/single/product', $namespaceController.'BiasharaOrdersController@updateSingleProduct');
+    Route::post('/delete/single/product', $namespaceController.'BiasharaOrdersController@deleteSingleProduct');
 });

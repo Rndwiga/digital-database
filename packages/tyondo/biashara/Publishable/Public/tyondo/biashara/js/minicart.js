@@ -2057,7 +2057,7 @@ var defaults = module.exports = {
     styles: '',
 
     strings: {
-        button: 'Submit Order',
+        button: 'View Order',
         subtotal: 'Subtotal:',
         discount: 'Discount:',
         empty: 'Your shopping cart is empty'

@@ -46,6 +46,24 @@ class BiasharaOrdersController extends Controller
         return redirect(route('biashara.order.orders'));
 
     }
+    public function updateSingleProduct(Request $request){
+        $input = $request->all();
+        $product = Draft_order::findOrFail($input['id']);
+        //$product = $this->getSingleProductDraftOrder($input['id']);
+            $product->quantity = $input['quantity'];
+            $product->product_total_order = $input['product_total_order'];
+            $product->save();
+
+        //return redirect()->back();
+        return "success";
+    }
+    public function deleteSingleProduct(Request $request){
+        $input = $request->all();
+        $product = Draft_order::findOrFail($input['id']);
+            $product->delete();
+
+        return "success";
+    }
     /**
      * deletes all order items and marks the order number as deleted
      * @param  $orderNumberId
