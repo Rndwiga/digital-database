@@ -1,0 +1,36 @@
+{
+	"name": "tyondo/mnara",
+	"type": "package",
+    "description": "User management package with ACL for managing Users / Roles / Permissions in Laravel 5.3 and 5.4.",
+    "keywords": ["authorization", "rbac", "permissions", "roles", "gui", "admin", "laravel", "acl"],
+    "homepage": "https://github.com/Rndwiga/mnara",
+    "authors": [
+        {
+            "name": "Raphael Ndwiga",
+            "email": "packages@tyondo.com"
+        }
+    ],
+    "require": {
+		"php": ">=5.5.9",
+        "laravel/framework": "5.3.*|5.4.*",
+        "pragmarx/google2fa": "^1.0",
+        "tyondo/menu-generator": "1.0.*",
+        "tyondo/laravel-notifications": "1.0.*",
+        "laravelcollective/html": "5.3.*|5.4.*",
+        "spatie/laravel-activitylog": "^1.12"
+    },
+    "suggest": {
+        "caffeinated/themes": "Theming package for laravel"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.5"
+    },
+    "autoload": {
+       "psr-4": {
+		 "Tyondo\\Mnara\\": "src/"
+        }
+    },
+    "license": "MIT",
+	"minimum-stability": "dev"
+    
+}
